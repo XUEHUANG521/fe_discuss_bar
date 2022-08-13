@@ -1,8 +1,10 @@
-import jwt from 'jsonwebtoken';
+import jwt_decode from 'jwt-decode';
 import { TokenPayload } from '../types/token';
 
-const JWTdecoder = (token:string | null): TokenPayload =>{
-	const decoder = jwt.decode(token as string);
+const JWTdecoder = (token:string): TokenPayload =>{
+	const decoder = jwt_decode(token);
+
+	console.log(decoder);
 
 	if(!decoder) {
 		return {

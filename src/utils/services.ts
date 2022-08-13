@@ -5,11 +5,11 @@ import {AxiosRequestConfig} from 'axios';
 export function userLogin(params: userLoginForm) {
 	const config:AxiosRequestConfig = {
 		url: 'login',
-		method: 'GET',
+		method: 'POST',
 		data:params,
 	}
 
-	return authAxios(config).then((res) => res.data);
+	return authAxios(config);
 }
 
 export function userRegister(params: userRegisterForm) {
@@ -19,5 +19,5 @@ export function userRegister(params: userRegisterForm) {
 		data: params,
 	}
 
-	return authAxios(config).then((res) => res.data);
+	return authAxios(config);
 }

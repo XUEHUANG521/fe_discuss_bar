@@ -8,12 +8,11 @@ import PasswordIcon from '@mui/icons-material/Password';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import PersonIcon from '@mui/icons-material/Person';
-import React, { FormEventHandler, useState } from 'react';
+import React, { useState } from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {makeStyles} from '@material-ui/styles';
 import { userRegister } from '../../utils/services';
 import { emailValidation, lengthValidation, numberValidation, uppercaseValidation,lowercaseValidation } from '../../utils/utils';
-import { Console } from 'console';
 import { useNavigate } from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
@@ -49,22 +48,28 @@ const SignUpPage = () => {
 		setUserNamehelperText('');
 		setemailhelperText('');
 		setpasswordhelperText('');
+		setIsLoading(true);
 		if(!emailValidation(email)) {
+			setIsLoading(false);
 			return setemailhelperText('Please Provide vaild email address');
 		}
 		if(!numberValidation(password)) {
+			setIsLoading(false);
 			return setpasswordhelperText('Password should contain as least one Number');
 		}
 
 		if(!lengthValidation(password,8)) {
+			setIsLoading(false);
 			return setpasswordhelperText('Password should be greater than 8 letters');
 		}
 
 		if(!uppercaseValidation(password)) {
+			setIsLoading(false);
 			return setpasswordhelperText('Password should contain as least one UpperCase letter');
 		}
 
 		if(!lowercaseValidation(password)) {
+			setIsLoading(false);
 			return setpasswordhelperText('Password should contain as least one LowerCase  letter');
 		}
 		
@@ -77,11 +82,12 @@ const SignUpPage = () => {
 		console.log(params);
 
 		userRegister(params).then((res) => {
-			console.log(res);
+			console.log('res ' + JSON.stringify(res.data));
+			setIsLoading(false);
+			navigate('/')
 		});
 		
 		console.log('register');
-		navigate('/')
 	}
 	const handleClickShowPassword = () => {
 		setShowPassword(!showPassword);
@@ -138,7 +144,7 @@ const SignUpPage = () => {
 					variant="outlined"
 					error={Boolean(passwordhelperText)}
         			helperText={passwordhelperText || ''}
-					type={showPassword ? 'password' : 'text'}
+					type={showPassword ? 'text' : 'password'}
 					onChange={(event)=> setPassword(event.target.value)}
 					fullWidth
 					className={classes.input}

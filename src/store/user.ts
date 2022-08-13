@@ -1,14 +1,15 @@
 import {createSlice, PayloadAction} from  '@reduxjs/toolkit';
 import type { RootState } from './store';
 import {get as getStorage, put as putStorage, del as deleteStorage,clearStorage} from '../utils/localStorage';
-import JWTdecoder from '../utils/JWTdecoder';
-import {user} from '../types/user';
+import {user, token} from '../types/user';
 
+const storedUser: user = JSON.parse(getStorage('user'));
+const storedToken: token = JSON.parse(getStorage('token'));
 const initialState: user = {
-	username: JSON.parse(getStorage('user')).username || null,
-	email: JSON.parse(getStorage('user')).email || null,
-	role: JSON.parse(getStorage('user')).role || null,
-	token:JSON.parse(getStorage('user')).token || null,
+	username: storedUser?.username || '',
+	email: storedUser?.email || '',
+	role: storedUser?.role || '',
+	token:storedToken?.token || '',
 }
 
 
@@ -19,33 +20,34 @@ export const userSlice = createSlice({
 		addUser: (state: user, action) => {
 			const userData = action.payload;
 			putStorage('user', userData);
-			state.username = userData.email;
+			state.username = userData.username;
 			state.email = userData.email;
+			state.role = userData.role;
 
 		},
 		removeUser: (state:user) => {
 			deleteStorage('user');
 			state.username = null;
 			state.email = null;
+			state.email = null;
+			state.role = null;
 		},
 
 		createCredential :(
 			state, {payload: {token}}:PayloadAction<{token : string}>
 			) => {
-				const {role} = JWTdecoder(token);
-				state.role = role;
+				console.log('token in create Credential ' + token);
 				state.token = token;
 		},
 
 		removeCredential: (state) => {
 			clearStorage();
 			state.token = null;
-			state.email = null;
-			state.role = null;
 		}
 	}
 })
 
 export const {addUser, removeUser, createCredential, removeCredential} = userSlice.actions;
+export const selectToken = (state: RootState) => state.user.token;
 
 export default userSlice.reducer;

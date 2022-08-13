@@ -2,7 +2,7 @@ import {TextField, Grid} from '@mui/material';
 import styles from './Login.module.scss';
 import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
-import EmailIcon from '@mui/icons-material/Email';
+// import EmailIcon from '@mui/icons-material/Email';
 import Button from '@mui/material/Button';
 import PasswordIcon from '@mui/icons-material/Password';
 import Visibility from '@mui/icons-material/Visibility';
@@ -11,6 +11,13 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useState } from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {makeStyles} from '@material-ui/styles';
+import {lengthValidation, numberValidation, uppercaseValidation,lowercaseValidation } from '../../utils/utils';
+import { userLogin } from '../../utils/services';
+import { useNavigate } from 'react-router-dom';
+import JWTdecoder from '../../utils/JWTdecoder';
+import { useDispatcher } from '../../store/hook';
+import { addUser, createCredential} from '../../store/user';
+import { put as putStorage } from '../../utils/localStorage';
 
 const useStyles = makeStyles(theme => ({
 	input: {
@@ -29,9 +36,61 @@ const useStyles = makeStyles(theme => ({
 
 
 const LoginPage = () => {
+	const navigate = useNavigate();
+	const dispatch = useDispatcher();
 	const classes = useStyles();
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
+	const [userNamehelperText, setUserNamehelperText] = useState('');
+	const [passwordhelperText, setpasswordhelperText] = useState('');
 	const[showPassword, setShowPassword] = useState(false);
 	const[isLoading, setIsLoading] = useState(false);
+
+	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		setUserNamehelperText('');
+		setpasswordhelperText('');
+		setIsLoading(true);
+		if(!numberValidation(password)) {
+			setIsLoading(false);
+			return setpasswordhelperText('Password should contain as least one Number');
+		}
+
+		if(!lengthValidation(password,8)) {
+			setIsLoading(false);
+			return setpasswordhelperText('Password should be greater than 8 letters');
+		}
+
+		if(!uppercaseValidation(password)) {
+			setIsLoading(false);
+			return setpasswordhelperText('Password should contain as least one UpperCase letter');
+		}
+
+		if(!lowercaseValidation(password)) {
+			setIsLoading(false);
+			return setpasswordhelperText('Password should contain as least one LowerCase  letter');
+		}
+		
+		const params = {
+			username, password
+		}
+		userLogin(params)
+		.then((res) => {
+			const result = JWTdecoder(res.data.token);
+			dispatch(addUser(result));
+			putStorage('user',result);
+			dispatch(createCredential(JSON.parse(`{ "token": "${res.data.token}"}`)));
+			putStorage('token', JSON.parse(`{ "token": "${res.data.token}"}`));
+			setIsLoading(false);
+			navigate('/')
+	
+		})
+		.catch((error) => {
+			setIsLoading(false);
+			console.log(error);
+
+		})
+	}
 
 	const handleClickShowPassword = () => {
 		setShowPassword(!showPassword);
@@ -41,13 +100,16 @@ const LoginPage = () => {
 		<Grid container className={styles.container}>
 			<Grid item md={4} className={styles.background}></Grid>
 			<Grid item xs={12} md={8} className={styles.content}>
-				<div className={styles.wrapper}>
+				<form className={styles.wrapper} onSubmit={handleSubmit}>
 					<h1>Log in</h1>
 					<TextField
 					required
 					margin='normal'
-					label="UserName" 
+					label="Username or Email" 
 					variant="outlined"
+					error={Boolean(userNamehelperText)}
+					helperText={userNamehelperText}
+					onChange={(event)=>setUsername(event.target.value)}
 					fullWidth
 					className={classes.input}
 					InputProps={{
@@ -64,7 +126,10 @@ const LoginPage = () => {
 					required
 					label="Password" 
 					variant="outlined"
-					type={showPassword ? 'password' : 'text'}
+					onChange={(event)=>setPassword(event.target.value)}
+					error={Boolean(passwordhelperText)}
+					helperText={passwordhelperText}
+					type={showPassword ? 'text' : 'password'}
 					fullWidth
 					className={classes.input}
 					InputProps={{
@@ -91,10 +156,11 @@ const LoginPage = () => {
 					</LoadingButton> :  
 					 <Button 
 					 variant="outlined"
+					 type='submit'
 					 className={classes.button}
 					 >Log in</Button>
 					}
-				</div>
+				</form>
 			</Grid>
 		</Grid>
 		</>

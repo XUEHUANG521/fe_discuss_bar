@@ -4,6 +4,9 @@ export interface user {
 	role: string | null,
 	token: string | null,
 }
+export interface token {
+	token: string | null
+}
 
 export interface userLoginForm {
 	username: string;

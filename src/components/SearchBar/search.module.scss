@@ -1,3 +1,4 @@
+@import '../../css/main.scss';
 .container {
 	background-image: url('../../image/discuss.jpeg');
 	justify-content: center;
@@ -27,6 +28,13 @@
 		&:focus {
 			outline: none;
 		}
+		@include MQ($M) {
+			width:20rem;
+		}
+		@include MQ($L) {
+			width:25rem;
+		}
+		
 	}
 	.searchButton {
 		z-index: 1;
