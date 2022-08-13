@@ -1,0 +1,30 @@
+@import '../../css/main.scss';
+.container {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	// @include MQ($M) {
+	// 	display: none;
+	// }
+	
+}
+// .link_container {
+// 	display: flex;
+// }
+.link {
+	width:max-content;
+	height:max-content;
+	display: block;
+	color: black;
+	text-align: center;
+	padding: 20px 16px;
+	text-decoration: none;
+	font-size: 18px;
+	margin:auto 1.5rem;
+	@include MQ($M) {
+		display: none;
+	}
+	&:hover {
+		background-color: gray;
+	}
+}

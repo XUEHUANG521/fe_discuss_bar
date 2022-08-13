@@ -1,0 +1,31 @@
+@import '../../../css/main';
+.container {
+	display: flex;
+	@include MQ($M) {
+		display: none;
+	}
+}
+.button {
+	width: max-content;
+	height: max-content;
+	display: inline-block;
+	border: 1px solid black;
+	padding: 0.8rem 1.5rem;
+	font-size:1.2rem;
+	font-weight:500;
+	margin: 0 0.5rem;
+}
+.login_button {
+	background:white;
+	&:hover {
+		background-color: #69b1bb;
+	}
+}
+
+.register_button {
+	background:black;
+	color:white;
+	&:hover {
+		background-color: #69b1bb;
+	}
+}

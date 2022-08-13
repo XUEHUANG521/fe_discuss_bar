@@ -1,0 +1,57 @@
+@import '../../css/main';
+.custom_navbar {
+	margin: 5px;
+	padding:15px;
+	display: block;
+	cursor: pointer;
+	position: relative;
+	span {
+		width: 20px;
+		height:3px;
+		display: block;
+		margin: 5px;
+		background-color: black;
+	}
+}
+
+.sideBar {
+	position:absolute;
+	width: 150px;
+	background-color: white;
+	color:black;
+	top: 60px;
+	left:30px;
+	border: 2px black double;
+}
+
+.link {
+	display: block;
+	color: black;
+	text-align: center;
+	padding: 14px 16px;
+	text-decoration: none;
+	font-size: 18px;
+	border-bottom: 1px black double;
+
+	&:last-child {
+		border-bottom: 0px;
+	}
+	&:hover {
+		background-color: gray;
+	}
+}
+
+.login_button {
+	background:white;
+	&:hover {
+		background-color: #69b1bb;
+	}
+}
+
+.register_button {
+	background:black;
+	color:white;
+	&:hover {
+		background-color: #69b1bb;
+	}
+}

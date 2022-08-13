@@ -1,0 +1,24 @@
+@import '../../css/main.scss';
+.container {
+	align-items: center;
+	justify-content: space-between;
+	padding: 12px 60px;
+	box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.15);
+	display: flex;
+	height: min-content;
+	// background-color: aqua;
+	@include MQ($M) {
+		display:  none;
+	}
+}
+
+.mobile_container {
+	display: none;
+	height: min-content;
+	align-items: center;
+	box-shadow: 0 1px 10px 0 rgba(0, 0, 0, 0.15);
+	@include MQ($M) {
+		display:  flex;
+	}
+	
+}

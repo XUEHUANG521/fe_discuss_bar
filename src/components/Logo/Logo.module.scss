@@ -1,0 +1,7 @@
+@import '../../css/main';
+.logo {
+	width:60px;
+	@include MQ($M) {
+		display: none;
+	}
+}
