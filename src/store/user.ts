@@ -34,13 +34,13 @@ export const userSlice = createSlice({
 		},
 
 		createCredential :(
-			state, {payload: {token}}:PayloadAction<{token : string}>
+			state:user, {payload: {token}}:PayloadAction<{token : string}>
 			) => {
 				console.log('token in create Credential ' + token);
 				state.token = token;
 		},
 
-		removeCredential: (state) => {
+		removeCredential: (state:user) => {
 			clearStorage();
 			state.token = null;
 		}
