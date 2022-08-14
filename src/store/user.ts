@@ -36,7 +36,7 @@ export const userSlice = createSlice({
 		createCredential :(
 			state:user, {payload: {token}}:PayloadAction<{token : string}>
 			) => {
-				console.log('token in create Credential ' + token);
+				// console.log('token in create Credential ' + token);
 				state.token = token;
 		},
 
@@ -49,5 +49,6 @@ export const userSlice = createSlice({
 
 export const {addUser, removeUser, createCredential, removeCredential} = userSlice.actions;
 export const selectToken = (state: RootState) => state.user.token;
+export const selectUserName = (state:RootState) => state.user.username;
 
 export default userSlice.reducer;

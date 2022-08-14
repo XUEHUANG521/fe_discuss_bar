@@ -1,11 +1,12 @@
-@import '../../../css/main';
-.container {
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	@include MQ($M) {
-		display: none;
-	}
+.icon {
+	width: 4rem;
+	height:4rem;
+	margin:0 0.5rem;
+}
+
+.profile {
+	font-weight: 500;
+	font-size: 16px;
 }
 .button {
 	width: max-content;
@@ -19,14 +20,6 @@
 }
 .login_button {
 	background:white;
-	&:hover {
-		background-color: #69b1bb;
-	}
-}
-
-.register_button {
-	background:black;
-	color:white;
 	&:hover {
 		background-color: #69b1bb;
 	}

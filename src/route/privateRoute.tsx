@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 // import lodash from 'lodash';
 import { Navigate } from 'react-router-dom';
 import { useAppSelector } from '../store/hook';
@@ -25,4 +25,4 @@ const PrivateRoute:React.FC<Props> = ({
 	return <Navigate to="/login" />;
 };
 
-export default PrivateRoute;
+export default memo(PrivateRoute);

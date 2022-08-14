@@ -11,7 +11,6 @@ import PersonIcon from '@mui/icons-material/Person';
 import { useState } from 'react';
 import LoadingButton from '@mui/lab/LoadingButton';
 import {makeStyles} from '@material-ui/styles';
-import {lengthValidation, numberValidation, uppercaseValidation,lowercaseValidation } from '../../utils/utils';
 import { userLogin } from '../../utils/services';
 import { useNavigate } from 'react-router-dom';
 import JWTdecoder from '../../utils/JWTdecoder';
@@ -51,32 +50,15 @@ const LoginPage = () => {
 		setUserNamehelperText('');
 		setpasswordhelperText('');
 		setIsLoading(true);
-		if(!numberValidation(password)) {
-			setIsLoading(false);
-			return setpasswordhelperText('Password should contain as least one Number');
-		}
 
-		if(!lengthValidation(password,8)) {
-			setIsLoading(false);
-			return setpasswordhelperText('Password should be greater than 8 letters');
-		}
-
-		if(!uppercaseValidation(password)) {
-			setIsLoading(false);
-			return setpasswordhelperText('Password should contain as least one UpperCase letter');
-		}
-
-		if(!lowercaseValidation(password)) {
-			setIsLoading(false);
-			return setpasswordhelperText('Password should contain as least one LowerCase  letter');
-		}
-		
 		const params = {
 			username, password
 		}
 		userLogin(params)
 		.then((res) => {
+			console.log('login');
 			const result = JWTdecoder(res.data.token);
+			// console.log(result);
 			dispatch(addUser(result));
 			putStorage('user',result);
 			dispatch(createCredential(JSON.parse(`{ "token": "${res.data.token}"}`)));
