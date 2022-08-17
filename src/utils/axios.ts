@@ -14,7 +14,7 @@ const url_prefix  = () => {
 
 const baseUrl = `${url_prefix()}/`;
 
-export default function authAxios(options: AxiosRequestConfig) {
+function authAxios(options: AxiosRequestConfig) {
 		const instance = axios.create({
 			baseURL: baseUrl,
 			timeout: 50000,
@@ -22,3 +22,6 @@ export default function authAxios(options: AxiosRequestConfig) {
 
 		return instance(options);
 }
+
+
+export default authAxios;
